@@ -1,0 +1,155 @@
+ScreenManager:
+    PocketApi:
+    Parameters:
+    Edit:
+
+
+<PocketApi>:
+    name: 'pocket-api'
+    MDBoxLayout:
+        orientation: 'vertical'
+        pos_hint: {"center_x": .5, "top": 1}
+        size_hint_y: 0.5
+        spacing: "10dp"
+        MDTopAppBar:
+            title: 'Pocket api'
+            elevation: 10
+            right_action_items: [["cog", lambda x: app.set_screen('parameters')]]
+        MDCard:
+            padding: 16
+            orientation: "vertical"
+            size_hint: .9, .9
+            elevation: 20
+            line_color: (0.2, 0.2, 0.2, 0.1)
+            pos_hint: {"center_x": .5, "center_y": .5}
+            MDGridLayout:           
+                pos_hint: {"top": 1}
+                size_hint_y: 0.3
+                rows: 2
+                cols: 2
+                spacing: "10dp"
+                padding: "10dp"
+                MDLabel:
+                    size_hint_y: .1
+                    text: "local:"
+                    halign: 'left'
+                    font_size: '15sp'
+                MDLabel:
+                    id: local
+                    size_hint_y: .1
+                    halign: 'left'
+                    font_size: '15sp'
+                MDLabel:
+                    size_hint_y: .1
+                    text: "network:"
+                    halign: 'left'
+                    font_size: '15sp'
+                MDLabel:
+                    id: network
+                    size_hint_y: .1
+                    halign: 'left'
+                    font_size: '15sp'
+            MDRelativeLayout:
+                size_hint_x: 1
+                MDRectangleFlatButton:
+                    id: api_button
+                    pos_hint:{"center_x": 0.5, "center_y": 0.3}
+                    text: "run server"
+                    on_press: app.run_api()
+
+
+
+<Parameters>:
+    name: 'parameters'
+    MDBoxLayout:
+        orientation: 'vertical'
+        pos_hint: {"center_x": .5, "top": 1}
+        MDTopAppBar:
+            title: 'Parameters'
+            elevation: 10
+            left_action_items: [["keyboard-backspace", lambda x: app.set_screen('pocket-api')]]
+        ScrollView:
+            MDList:
+                id: parameters
+
+
+<Edit>:
+    name: 'edit'
+    MDBoxLayout:
+        orientation: 'vertical'
+        pos_hint: {"center_x": .5, "top": 1}
+        size_hint_y: 1
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: 'Edit'
+            elevation: 10
+            right_action_items: [["content-save", lambda x: app.edit_data()]]
+            left_action_items: [["keyboard-backspace", lambda x: app.set_screen('parameters')]]
+        ScrollView:
+            id: scroll
+            CodeInput:
+                id: code_input
+                size_hint: 1, None
+                height: max(self.minimum_height, scroll.height)
+
+
+        
+<PortDialogContent>:
+    orientation: 'vertical'
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+    MDTextField:
+        id: portNumber
+        input_filter: "int"
+        max_text_length: 5
+        required: True
+        error: True
+        helper_text_mode: "on_error"
+        helper_text: "Choose a port between 1024 and 65535"
+        hint_text: "Choose your port"
+        text: str(app.dict.get('port'))
+
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+
+
+<ChooseTheme>:
+    size_hint_y: None
+    height: "60dp"
+    MDLabel:
+        halign: "center"
+        text: "Light"
+        pos_hint: {"center_y": .5}
+    Check:
+        id: checkLight
+        pos_hint: {"center_y": .5} 
+        on_active: app.light_mode()
+    MDLabel:
+        halign: "center"
+        text: "Dark"
+        pos_hint: {"center_y": .5}   
+    Check:
+        id: checkDark
+        pos_hint: {"center_y": .5}
+        on_active: app.dark_mode()
+
+<DownloadApi>:
+    orientation: 'vertical'
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+    MDTextField:
+        id: fileName
+        helper_text_mode: "on_focus"
+        helper_text: "Default name data.json"
+        hint_text: "Insert a name"
+    MDTextField:
+        id: urlEntry
+        required: True
+        error: True
+        helper_text_mode: "on_error"
+        helper_text: "This field is required"
+        hint_text: "Insert an url"
